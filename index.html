@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSoul Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/lucide-static@0.259.0/dist/lucide.css" rel="stylesheet">
+<style>
+  body {
+    margin:0;
+    font-family: 'Fredoka One', sans-serif;
+    background: repeating-linear-gradient(
+      45deg,
+      #000 0 10px,
+      #fff 10px 20px
+    );
+    color:white;
+  }
+  header {
+    text-align:center;
+    font-size:2rem;
+    padding:15px 0;
+    text-shadow:1px 1px 2px black;
+  }
+  .search-container {
+    text-align:center;
+    margin-bottom:20px;
+  }
+  .search-container input {
+    width:80%;
+    padding:8px;
+    border-radius:8px;
+    border:none;
+    font-size:16px;
+  }
+  .player-grid {
+    display:grid;
+    gap:15px;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    padding:0 10px 30px 10px;
+  }
+  .player-box {
+    background:#000;
+    border:2px solid #fff;
+    border-radius:10px;
+    text-align:center;
+    padding:10px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .player-box img {
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    margin-bottom:10px;
+    object-fit:cover;
+  }
+  .player-box button {
+    margin-top:10px;
+    padding:6px 12px;
+    border:none;
+    border-radius:6px;
+    background:#ff0000;
+    color:#fff;
+    cursor:pointer;
+    font-weight:bold;
+  }
+</style>
+</head>
+<body>
+<header>CSoul Gallery</header>
+<div class="search-container">
+  <input type="text" placeholder="Search Player" id="searchInput">
+</div>
+<div class="player-grid" id="playerGrid">
+  <!-- Player Boxes Populated By JS -->
+</div>
+<script>
+const players = [
+  {name:"PlayerOne", avatar:"https://i.pravatar.cc/80?img=1"},
+  {name:"PlayerTwo", avatar:"https://i.pravatar.cc/80?img=2"},
+  {name:"PlayerThree", avatar:"https://i.pravatar.cc/80?img=3"},
+  {name:"PlayerFour", avatar:"https://i.pravatar.cc/80?img=4"}
+];
+
+const playerGrid = document.getElementById("playerGrid");
+function renderPlayers(list) {
+  playerGrid.innerHTML="";
+  list.forEach(p=>{
+    const box=document.createElement("div");
+    box.className="player-box";
+    box.innerHTML=`
+      <img src="${p.avatar}" alt="${p.name}">
+      <span>${p.name}</span>
+      <button onclick="location.href='player.html?player=${p.name}'">Enter</button>
+    `;
+    playerGrid.appendChild(box);
+  });
+}
+renderPlayers(players);
+
+const searchInput=document.getElementById("searchInput");
+searchInput.addEventListener("input",()=>{
+  const val=searchInput.value.toLowerCase();
+  renderPlayers(players.filter(p=>p.name.toLowerCase().includes(val)));
+});
+</script>
+</body>
+</html>
