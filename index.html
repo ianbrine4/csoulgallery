@@ -4,122 +4,44 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CSoul Gallery</title>
-<style>
-body {
-  margin: 0;
-  font-family: 'Fredoka One', sans-serif;
-  background-color: #313131;
-  background-image: radial-gradient(rgba(255,255,255,0.17) 2px, transparent 0);
-  background-size: 30px 30px;
-  color: white;
-}
-header {
-  text-align: center;
-  font-size: 2rem;
-  padding: 1rem;
-}
-.search-container {
-  display: flex;
-  justify-content: center;
-  padding: 0.5rem;
-}
-.search-container input {
-  width: 90%;
-  max-width: 400px;
-  padding: 0.7rem;
-  border-radius: 12px;
-  border: none;
-  font-size: 1rem;
-  background: #202020;
-  color: white;
-}
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-}
-.card {
-  background: #000;
-  border: 2px solid #444;
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-  transition: 0.2s ease;
-}
-.card:hover {
-  border-color: #00a3fe;
-  transform: translateY(-3px);
-}
-.player-name {
-  font-size: 1.1rem;
-  margin-top: 0.5rem;
-}
-.enter-btn {
-  margin-top: 0.8rem;
-  padding: 0.5rem 0.8rem;
-  border-radius: 8px;
-  background: #00a3fe;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-}
-.enter-btn:hover {
-  background: #0077c2;
-}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://unpkg.com/lucide/dist/lucide.js"></script>
 </head>
 <body>
-
-<header>CSoul Gallery</header>
-
-<div class="search-container">
-  <input id="search" placeholder="Search player...">
-</div>
-
-<div class="container" id="playerContainer">
-  <!-- Players loaded here -->
-</div>
-
+<header>
+  <h1>CSoul Gallery</h1>
+  <input type="text" id="search" placeholder="Search player..." />
+</header>
+<main id="gallery" class="container"></main>
 <script>
+const galleryEl = document.getElementById("gallery")
+const searchEl = document.getElementById("search")
+
 async function loadPlayers() {
-  try {
-    const res = await fetch("/api/upload");
-    const data = await res.json();
-    return Object.keys(data || {});
-  } catch (e) {
-    console.error("Failed to load players", e);
-    return [];
-  }
-}
-
-function renderPlayers(players, filter="") {
-  const container = document.getElementById("playerContainer");
-  container.innerHTML = "";
-  players.filter(p => p.toLowerCase().includes(filter.toLowerCase()))
-         .forEach(name => {
-    const card = document.createElement("div");
-    card.className = "card";
+  const resp = await fetch('/api/players')
+  const players = await resp.json()
+  galleryEl.innerHTML = ''
+  players.forEach(p => {
+    const card = document.createElement('div')
+    card.className = 'card'
     card.innerHTML = `
-      <div class="player-name">${name}</div>
-      <button class="enter-btn" onclick="goToPlayer('${encodeURIComponent(name)}')">View Stickers</button>
-    `;
-    container.appendChild(card);
-  });
+      <div class="image"><img src="${p.avatar}" alt="${p.name}" /></div>
+      <div class="title">${p.name}</div>
+      <div class="action"><a href="player.html?name=${encodeURIComponent(p.name)}">Enter</a></div>
+    `
+    galleryEl.appendChild(card)
+  })
 }
 
-function goToPlayer(name) {
-  window.location = `player.html?player=${name}`;
-}
+searchEl.addEventListener('input', () => {
+  const value = searchEl.value.toLowerCase()
+  Array.from(galleryEl.children).forEach(c => {
+    c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(value) ? '' : 'none'
+  })
+})
 
-(async () => {
-  const players = await loadPlayers();
-  renderPlayers(players);
-
-  document.getElementById("search")
-    .addEventListener("input", e => renderPlayers(players, e.target.value));
-})();
+loadPlayers()
 </script>
 </body>
 </html>
