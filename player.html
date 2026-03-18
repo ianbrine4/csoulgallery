@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Player Stickers</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+body {margin:0;font-family:'Fredoka One',sans-serif;background:#111;color:#fff;}
+header {text-align:center;font-size:1.8rem;padding:15px 0;text-shadow:1px 1px 2px black;}
+.sticker-grid {display:grid;gap:15px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));padding:0 10px 30px 10px;}
+.sticker-box {background:#000;border:2px solid #fff;border-radius:10px;text-align:center;padding:10px;display:flex;flex-direction:column;align-items:center;}
+.sticker-box img {width:100px;height:100px;border-radius:10px;margin-bottom:6px;object-fit:cover;}
+.sticker-box button {padding:4px 8px;border:none;border-radius:6px;background:#ff0000;color:#fff;cursor:pointer;font-weight:bold;}
+</style>
+</head>
+<body>
+<header id="playerHeader">Player Gallery</header>
+<div class="sticker-grid" id="stickerGrid"></div>
+<script>
+const urlParams=new URLSearchParams(window.location.search);
+const playerName=urlParams.get("player")||"Unknown Player";
+document.getElementById("playerHeader").innerText=playerName+"'s Stickers";
+
+const stickers=[
+  {id:"123456789", url:"https://i.imgur.com/1.png"},
+  {id:"987654321", url:"https://i.imgur.com/2.png"},
+  {id:"456789123", url:"https://i.imgur.com/3.png"}
+];
+
+const stickerGrid=document.getElementById("stickerGrid");
+stickers.forEach(s=>{
+  const box=document.createElement("div");
+  box.className="sticker-box";
+  box.innerHTML=`
+    <img src="${s.url}" alt="Sticker">
+    <span>${s.id}</span>
+    <button onclick="navigator.clipboard.writeText('${s.id}')">Copy</button>
+  `;
+  stickerGrid.appendChild(box);
+});
+</script>
+</body>
+</html>
