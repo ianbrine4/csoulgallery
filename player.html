@@ -4,124 +4,48 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Player Gallery</title>
-<style>
-body {
-  margin: 0;
-  font-family: 'Fredoka One', sans-serif;
-  background-color: #313131;
-  background-image: radial-gradient(rgba(255,255,255,0.17) 2px, transparent 0);
-  background-size: 30px 30px;
-  color: white;
-}
-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  font-size: 1.8rem;
-}
-.back-btn {
-  padding: 0.5rem 0.8rem;
-  background: #444;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  cursor: pointer;
-}
-.back-btn:hover {
-  background: #666;
-}
-.player-title {
-  flex: 1;
-  text-align: center;
-}
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-}
-.card {
-  background: #000;
-  border: 2px solid #444;
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-}
-.decal-img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #555;
-}
-.copy-btn {
-  margin-top: 0.6rem;
-  padding: 0.4rem 0.8rem;
-  background: #00a3fe;
-  border: none;
-  border-radius: 8px;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-}
-.copy-btn:hover {
-  background: #0077c2;
-}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://unpkg.com/lucide/dist/lucide.js"></script>
 </head>
 <body>
-
 <header>
-  <button class="back-btn" onclick="history.back()">Back</button>
-  <div class="player-title" id="playerName">Loading...</div>
+  <h1 id="player-title">Player Gallery</h1>
 </header>
-
-<div class="container" id="stickerContainer">
-  <!-- Stickers loaded here -->
-</div>
-
+<main id="player-gallery" class="container"></main>
 <script>
-function getPlayerFromURL() {
-  return new URLSearchParams(window.location.search).get("player") || "";
-}
+const urlParams = new URLSearchParams(window.location.search)
+const playerName = urlParams.get('name')
+document.getElementById('player-title').textContent = playerName + " Gallery"
 
-async function loadStickers(player) {
-  try {
-    const res = await fetch(`/api/upload?player=${encodeURIComponent(player)}`);
-    return await res.json();
-  } catch (e) {
-    console.error("Failed to load stickers", e);
-    return [];
+async function loadPlayerStickers() {
+  const resp = await fetch(`/api/player?name=${encodeURIComponent(playerName)}`)
+  const data = await resp.json()
+  const galleryEl = document.getElementById('player-gallery')
+  galleryEl.innerHTML = ''
+  if (!data.stickers || data.stickers.length === 0) {
+    galleryEl.innerHTML = `<p style="color:white;text-align:center">No stickers found for this player.</p>`
+    return
   }
+  data.stickers.forEach(s => {
+    const card = document.createElement('div')
+    card.className = 'card'
+    card.innerHTML = `
+      <div class="image"><img src="https://www.roblox.com/asset/?id=${s.id}" alt="${s.id}" /></div>
+      <div class="title">Sticker ID: ${s.id}</div>
+      <div class="action"><button class="copy-btn" data-id="${s.id}">Copy ID</button></div>
+    `
+    galleryEl.appendChild(card)
+  })
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      navigator.clipboard.writeText(e.target.dataset.id)
+      alert('Sticker ID copied: ' + e.target.dataset.id)
+    })
+  })
 }
 
-function renderStickers(stickerList) {
-  const container = document.getElementById("stickerContainer");
-  container.innerHTML = "";
-
-  stickerList.forEach(entry => {
-    entry.ids.forEach(id => {
-      const card = document.createElement("div");
-      card.className = "card";
-      const url = `https://www.roblox.com/asset-thumbnail/image?assetId=${id}&width=150&height=150&format=png`;
-      card.innerHTML = `
-        <img class="decal-img" src="${url}" alt="${id}">
-        <div>${id}</div>
-        <button class="copy-btn" onclick="navigator.clipboard.writeText('${id}')">Copy ID</button>
-      `;
-      container.appendChild(card);
-    });
-  });
-}
-
-(async () => {
-  const player = getPlayerFromURL();
-  document.getElementById("playerName").textContent = player;
-
-  const stickerList = await loadStickers(player);
-  renderStickers(stickerList);
-})();
+loadPlayerStickers()
 </script>
 </body>
 </html>
