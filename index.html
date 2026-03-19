@@ -2,20 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CSoul Sticker Gallery</title>
+    <title>🌙 CSOUL GALLERY</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="grid-bg">
+    <div class="glow-overlay"></div>
     <header>
-        <h1 class="glow">CSOUL GALLERY</h1>
-        <div class="search-wrap">
-            <input type="text" id="searchInput" placeholder="Search Player Name...">
-            <button onclick="searchPlayer()">SEARCH</button>
+        <h1 class="moon-title">🌙 <span>CSOUL GALLERY</span></h1>
+        <div class="search-box">
+            <input type="text" id="pSearch" placeholder="Find Player...">
+            <button onclick="search()">SEARCH</button>
         </div>
     </header>
-    <div class="container" id="player-grid">
-        <!-- Automatically filled by script.js -->
-    </div>
+    <div class="container" id="player-grid"></div>
     <script src="script.js"></script>
 </body>
 </html>
