@@ -3,21 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSOUL GALLERY</title>
+    <title>CSOUL | Library</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-main">
-    <div class="glow-top"></div>
-    <header class="header">
-        <h1 class="logo">CSOUL<span>GALLERY</span></h1>
-        <div class="search-box">
-            <input type="text" id="pSearch" placeholder="Search Player Username">
-            <button onclick="search()">SEARCH</button>
+<body class="bg-obsidian">
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i data-lucide="layers" class="red-glow"></i>
+                <span>CSOUL<b>LIBRARY</b></span>
+            </div>
+            <div class="search-wrapper">
+                <i data-lucide="search"></i>
+                <input type="text" id="pSearch" placeholder="Search library...">
+            </div>
         </div>
-    </header>
-    <main class="wrapper">
-        <div class="auto-grid" id="player-grid"></div>
+    </nav>
+
+    <div class="categories">
+        <button class="cat-btn active" onclick="loadGallery('new')">
+            <i data-lucide="clock"></i> NEW RELEASES
+        </button>
+        <button class="cat-btn" onclick="loadGallery('popular')">
+            <i data-lucide="flame"></i> MOST POPULAR
+        </button>
+    </div>
+
+    <main class="container">
+        <div class="stats-bar">
+            <span id="total-count">0 Players Found</span>
+        </div>
+        <div class="library-grid" id="player-grid"></div>
     </main>
+
     <script src="script.js"></script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
