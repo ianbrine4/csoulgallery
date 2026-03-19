@@ -3,19 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory | CSoul</title>
+    <title>Sticker Set | CSoul</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-main">
-    <div class="glow-top"></div>
-    <header class="player-info">
-        <button class="btn-back" onclick="location.href='index.html'">BACK</button>
-        <img id="p-avatar" src="" alt="Avatar">
-        <h2 id="p-name">TARGET</h2>
+<body class="bg-obsidian">
+    <header class="player-hero">
+        <div class="glass-header">
+            <button class="uiverse-back" onclick="location.href='index.html'">
+                <i data-lucide="arrow-left"></i> BACK
+            </button>
+            <div class="target-card">
+                <img id="p-avatar" src="" alt="">
+                <div class="target-meta">
+                    <h1 id="p-name">TARGET</h1>
+                    <span class="badge">VERIFIED STEAL</span>
+                </div>
+            </div>
+        </div>
     </header>
-    <main class="wrapper">
-        <div class="auto-grid" id="decal-grid"></div>
+
+    <main class="container">
+        <div class="sticker-grid" id="decal-grid"></div>
     </main>
+
     <script src="script.js"></script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
