@@ -1,51 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Player Gallery</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<title>Player</title>
 <link rel="stylesheet" href="styles.css">
-<script src="https://unpkg.com/lucide/dist/lucide.js"></script>
 </head>
 <body>
-<header>
-  <h1 id="player-title">Player Gallery</h1>
-</header>
-<main id="player-gallery" class="container"></main>
-<script>
-const urlParams = new URLSearchParams(window.location.search)
-const playerName = urlParams.get('name')
-document.getElementById('player-title').textContent = playerName + " Gallery"
 
-async function loadPlayerStickers() {
-  const resp = await fetch(`/api/player?name=${encodeURIComponent(playerName)}`)
-  const data = await resp.json()
-  const galleryEl = document.getElementById('player-gallery')
-  galleryEl.innerHTML = ''
-  if (!data.stickers || data.stickers.length === 0) {
-    galleryEl.innerHTML = `<p style="color:white;text-align:center">No stickers found for this player.</p>`
+<header>
+  <h1 id="title"></h1>
+</header>
+
+<main id="grid" class="container"></main>
+
+<script>
+const params = new URLSearchParams(location.search)
+const name = params.get("name")
+document.getElementById("title").innerText = name + " Gallery"
+
+async function load() {
+  const res = await fetch("/api/player?name=" + name)
+  const data = await res.json()
+
+  const grid = document.getElementById("grid")
+  grid.innerHTML = ""
+
+  if (!data || data.length === 0) {
+    grid.innerHTML = "<p style='color:white;text-align:center'>No sticker try finding new one</p>"
     return
   }
-  data.stickers.forEach(s => {
-    const card = document.createElement('div')
-    card.className = 'card'
-    card.innerHTML = `
-      <div class="image"><img src="https://www.roblox.com/asset/?id=${s.id}" alt="${s.id}" /></div>
-      <div class="title">Sticker ID: ${s.id}</div>
-      <div class="action"><button class="copy-btn" data-id="${s.id}">Copy ID</button></div>
+
+  data.forEach(id => {
+    const el = document.createElement("div")
+    el.className = "card"
+    el.innerHTML = `
+      <div class="image">
+        <img src="https://www.roblox.com/asset/?id=${id}">
+      </div>
+      <div class="title">${id}</div>
+      <button class="action" onclick="copy('${id}')">Copy</button>
     `
-    galleryEl.appendChild(card)
-  })
-  document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      navigator.clipboard.writeText(e.target.dataset.id)
-      alert('Sticker ID copied: ' + e.target.dataset.id)
-    })
+    grid.appendChild(el)
   })
 }
 
-loadPlayerStickers()
+function copy(id){
+  navigator.clipboard.writeText(id)
+  alert("Copied: " + id)
+}
+
+load()
 </script>
+
 </body>
 </html>
