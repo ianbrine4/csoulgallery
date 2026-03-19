@@ -1,47 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CSoul Gallery</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<script src="https://unpkg.com/lucide/dist/lucide.js"></script>
 </head>
 <body>
+
 <header>
   <h1>CSoul Gallery</h1>
-  <input type="text" id="search" placeholder="Search player..." />
+  <input id="search" placeholder="Search player...">
 </header>
-<main id="gallery" class="container"></main>
-<script>
-const galleryEl = document.getElementById("gallery")
-const searchEl = document.getElementById("search")
 
-async function loadPlayers() {
-  const resp = await fetch('/api/players')
-  const players = await resp.json()
-  galleryEl.innerHTML = ''
-  players.forEach(p => {
-    const card = document.createElement('div')
-    card.className = 'card'
-    card.innerHTML = `
-      <div class="image"><img src="${p.avatar}" alt="${p.name}" /></div>
+<main id="grid" class="container"></main>
+
+<script>
+const grid = document.getElementById("grid")
+const search = document.getElementById("search")
+
+async function load() {
+  const res = await fetch("/api/players")
+  const data = await res.json()
+
+  grid.innerHTML = ""
+
+  data.forEach(p => {
+    const el = document.createElement("div")
+    el.className = "card"
+    el.innerHTML = `
+      <div class="image">
+        <img src="${p.avatar}">
+      </div>
       <div class="title">${p.name}</div>
-      <div class="action"><a href="player.html?name=${encodeURIComponent(p.name)}">Enter</a></div>
+      <a class="action" href="/player.html?name=${p.name}">Open</a>
     `
-    galleryEl.appendChild(card)
+    grid.appendChild(el)
   })
 }
 
-searchEl.addEventListener('input', () => {
-  const value = searchEl.value.toLowerCase()
-  Array.from(galleryEl.children).forEach(c => {
-    c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(value) ? '' : 'none'
+search.oninput = () => {
+  const val = search.value.toLowerCase()
+  document.querySelectorAll(".card").forEach(c => {
+    c.style.display = c.innerText.toLowerCase().includes(val) ? "" : "none"
   })
-})
+}
 
-loadPlayers()
+load()
 </script>
+
 </body>
 </html>
