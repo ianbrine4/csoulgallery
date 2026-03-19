@@ -13,17 +13,23 @@
             <div class="logo">CSOUL<span>LIBRARY</span></div>
             <div class="search-wrap">
                 <i data-lucide="search"></i>
-                <input type="text" id="pSearch" placeholder="Search Roblox players...">
+                <input type="text" id="pSearch" oninput="searchLibrary()" placeholder="Search library...">
             </div>
         </div>
     </nav>
 
     <div class="tab-bar">
-        <button class="tab-btn active" id="tab-new" onclick="loadGallery('new')"><i data-lucide="clock"></i> NEW</button>
-        <button class="tab-btn" id="tab-popular" onclick="loadGallery('popular')"><i data-lucide="flame"></i> POPULAR</button>
+        <button class="tab-btn active" id="tab-new" onclick="loadGallery('new')">
+            <i data-lucide="clock"></i> NEWEST RELEASES
+        </button>
+        <button class="tab-btn" id="tab-popular" onclick="loadGallery('popular')">
+            <i data-lucide="flame"></i> TRENDING
+        </button>
     </div>
 
     <main class="container">
+        <!-- Newest Releases Section -->
+        <h2 class="section-label">LATEST STICKER SETS</h2>
         <div class="grid" id="main-grid"></div>
     </main>
 
