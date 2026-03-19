@@ -2,18 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Stickers | CSoul</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory | CSoul</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="grid-bg">
-    <header>
-        <button class="back-btn" onclick="location.href='index.html'">🌙 BACK</button>
-        <div class="profile">
-            <img id="p-avatar" src="" alt="">
-            <h2 id="p-name">PLAYER</h2>
-        </div>
+<body class="bg-main">
+    <div class="glow-top"></div>
+    <header class="player-info">
+        <button class="btn-back" onclick="location.href='index.html'">BACK</button>
+        <img id="p-avatar" src="" alt="Avatar">
+        <h2 id="p-name">TARGET</h2>
     </header>
-    <div class="container" id="decal-grid"></div>
+    <main class="wrapper">
+        <div class="auto-grid" id="decal-grid"></div>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
