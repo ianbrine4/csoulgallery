@@ -3,9 +3,11 @@ const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZi
 const headers = { "apikey": KEY, "Authorization": `Bearer ${KEY}`, "Content-Type": "application/json" };
 
 async function loadGallery(sort = 'new') {
+    // UI Tab Handling
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(`tab-${sort}`).classList.add('active');
 
+    // Supabase Fetch
     let fetchUrl = URL + "?select=*";
     if (sort === 'popular') fetchUrl += "&order=likes.desc";
     else fetchUrl += "&order=created_at.desc";
@@ -17,21 +19,25 @@ async function loadGallery(sort = 'new') {
     
     grid.innerHTML = "";
     data.forEach(p => {
-        // Use the first decal as the cover image
-        const coverImg = p.decals[0] ? `https://www.roblox.com/asset-thumbnail/image?assetId=${p.decals[0]}&width=420&height=420&format=png` : '';
+        // LOGIC: Use the first stolen decal as the cover image
+        const firstDecalId = p.decals[0];
+        const coverImageUrl = `https://www.roblox.com/asset-thumbnail/image?assetId=${firstDecalId}&width=420&height=420&format=png`;
+        
         grid.innerHTML += `
             <div class="card">
-                <div class="card-img" onclick="location.href='player.html?user=${p.username}'">
-                    <img src="${coverImg}">
+                <div class="card-display" onclick="location.href='player.html?user=${p.username}'">
+                    <img src="${coverImageUrl}" alt="Decal Cover">
                 </div>
-                <div class="card-name">${p.username}</div>
-                <div class="card-footer">
-                    <div class="like-box" onclick="like('${p.username}', ${p.likes})">
-                        <i data-lucide="heart"></i> <span id="l-${p.username}">${p.likes}</span>
+                <div class="card-title">${p.username}</div>
+                <div class="like-stats">
+                    <div onclick="like('${p.username}', ${p.likes})" style="cursor:pointer; display:flex; align-items:center; gap:5px;">
+                        <i data-lucide="heart" size="16"></i> <span id="l-${p.username}">${p.likes}</span>
                     </div>
-                    <div style="color:#444; font-size:0.8rem">${p.decals.length} Items</div>
+                    <span style="color:#222; font-size:10px;">${p.decals.length} DECALS</span>
                 </div>
-                <button class="copy-btn" onclick="location.href='player.html?user=${p.username}'">OPEN COLLECTION</button>
+                <button class="btn-enter" onclick="location.href='player.html?user=${p.username}'">
+                    ENTER GALLERY
+                </button>
             </div>`;
     });
     lucide.createIcons();
@@ -47,6 +53,17 @@ async function like(user, count) {
     document.getElementById(`l-${user}`).innerText = newCount;
 }
 
+// Search Functionality
+function searchLibrary() {
+    const term = document.getElementById('pSearch').value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        const name = card.querySelector('.card-title').innerText.toLowerCase();
+        card.style.display = name.includes(term) ? "block" : "none";
+    });
+}
+
+// Player Page Load (player.html)
 if (document.getElementById('decal-grid')) {
     const user = new URLSearchParams(window.location.search).get('user');
     document.getElementById('p-name').innerText = user;
@@ -59,10 +76,10 @@ if (document.getElementById('decal-grid')) {
             data[0].decals.forEach(id => {
                 grid.innerHTML += `
                     <div class="card">
-                        <div class="card-img">
+                        <div class="card-display">
                             <img src="https://www.roblox.com/asset-thumbnail/image?assetId=${id}&width=420&height=420&format=png">
                         </div>
-                        <button class="copy-btn" onclick="copyId('${id}')">COPY ID</button>
+                        <button class="btn-enter" onclick="copyId('${id}')">COPY ID</button>
                     </div>`;
             });
             lucide.createIcons();
@@ -72,7 +89,7 @@ if (document.getElementById('decal-grid')) {
 
 function copyId(id) {
     navigator.clipboard.writeText(id);
-    alert('ID Copied!');
+    alert('Decal ID: ' + id + ' Copied!');
 }
 
 loadGallery();
