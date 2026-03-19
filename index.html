@@ -2,19 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>🌙 CSOUL GALLERY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSOUL GALLERY</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="grid-bg">
-    <div class="glow-overlay"></div>
-    <header>
-        <h1 class="moon-title">🌙 <span>CSOUL GALLERY</span></h1>
+<body class="bg-main">
+    <div class="glow-top"></div>
+    <header class="header">
+        <h1 class="logo">CSOUL<span>GALLERY</span></h1>
         <div class="search-box">
-            <input type="text" id="pSearch" placeholder="Find Player...">
+            <input type="text" id="pSearch" placeholder="Search Player Username">
             <button onclick="search()">SEARCH</button>
         </div>
     </header>
-    <div class="container" id="player-grid"></div>
+    <main class="wrapper">
+        <div class="auto-grid" id="player-grid"></div>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
