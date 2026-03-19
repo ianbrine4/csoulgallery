@@ -3,11 +3,11 @@ const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZi
 const headers = { "apikey": KEY, "Authorization": `Bearer ${KEY}` };
 
 function search() {
-    const n = document.getElementById('pSearch').value;
-    if(n) location.href = `player.html?user=${n}`;
+    const val = document.getElementById('pSearch').value;
+    if(val) location.href = `player.html?user=${val}`;
 }
 
-// Index Grid
+// Index Load
 if (document.getElementById('player-grid')) {
     fetch(URL + "?select=*", { headers })
     .then(r => r.json())
@@ -17,14 +17,14 @@ if (document.getElementById('player-grid')) {
             grid.innerHTML += `
                 <div class="card">
                     <img src="https://www.roblox.com/headshot-thumbnail/image?keyword=${p.username}&width=420&height=420&format=png">
-                    <h3>${p.username}</h3>
-                    <button onclick="location.href='player.html?user=${p.username}'">VIEW 🌙</button>
+                    <h4 style="margin-bottom:10px">${p.username}</h4>
+                    <button style="width:100%; padding: 8px; font-size: 11px;" onclick="location.href='player.html?user=${p.username}'">VIEW GALLERY</button>
                 </div>`;
         });
     });
 }
 
-// Player Grid
+// Player Load
 if (document.getElementById('decal-grid')) {
     const user = new URLSearchParams(window.location.search).get('user');
     document.getElementById('p-name').innerText = user.toUpperCase();
@@ -34,13 +34,12 @@ if (document.getElementById('decal-grid')) {
     .then(r => r.json())
     .then(data => {
         const grid = document.getElementById('decal-grid');
-        if(data[0]) {
+        if(data[0] && data[0].decals) {
             data[0].decals.forEach(id => {
                 grid.innerHTML += `
                     <div class="card">
                         <img src="https://www.roblox.com/asset-thumbnail/image?assetId=${id}&width=420&height=420&format=png">
-                        <p style="color: #888;">ID: ${id}</p>
-                        <button onclick="navigator.clipboard.writeText('${id}'); alert('Copied!')">COPY ID</button>
+                        <button style="width:100%; padding: 8px; font-size: 11px;" onclick="navigator.clipboard.writeText('${id}'); alert('Copied!')">COPY ID</button>
                     </div>`;
             });
         }
