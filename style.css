@@ -1,90 +1,100 @@
-@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #050505; color: #fff; font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden; }
-
-/* Obsidian Grid */
-.bg-main {
-    background-image: 
-        linear-gradient(to right, #0f0f0f 1px, transparent 1px),
-        linear-gradient(to bottom, #0f0f0f 1px, transparent 1px);
-    background-size: 40px 40px;
+:root {
+    --red: #ff3c3c;
+    --red-hover: #ff1a1a;
+    --glass: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.08);
+    --bg: #050505;
 }
 
-.glow-top {
-    position: fixed; top: -10%; left: 50%; transform: translateX(-50%);
-    width: 80vw; height: 300px;
-    background: radial-gradient(circle, rgba(255,0,0,0.1) 0%, transparent 70%);
-    z-index: -1;
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+body { background: var(--bg); color: #fff; overflow-x: hidden; }
+
+/* Navbar UIverse Style */
+.navbar {
+    background: rgba(5, 5, 5, 0.8);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--border);
+    padding: 20px;
+    position: sticky; top: 0; z-index: 1000;
 }
 
-.header { text-align: center; padding: 80px 20px 40px; }
+.nav-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
 
-.logo {
-    font-family: 'Syncopate', sans-serif;
-    font-size: clamp(2rem, 8vw, 4.5rem);
-    letter-spacing: -2px;
-    text-transform: uppercase;
+.logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.5rem; }
+.logo b { color: var(--red); }
+.red-glow { filter: drop-shadow(0 0 8px var(--red)); color: var(--red); }
+
+.search-wrapper {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex; align-items: center; padding: 0 15px; width: 400px;
 }
 
-.logo span { color: #ff0000; text-shadow: 0 0 25px rgba(255,0,0,0.6); }
-
-.search-box {
-    display: flex; justify-content: center; gap: 10px;
-    margin-top: 40px; width: 100%;
+.search-wrapper input {
+    background: none; border: none; padding: 12px; color: white; width: 100%; outline: none;
 }
 
-input {
-    width: 100%; max-width: 400px; padding: 18px 25px;
-    background: #0a0a0a; border: 1px solid #1a1a1a;
-    border-radius: 8px; color: #fff; outline: none; transition: 0.3s;
+/* Category Tabs */
+.categories { display: flex; justify-content: center; gap: 15px; margin: 30px 0; }
+.cat-btn {
+    background: var(--glass); border: 1px solid var(--border); color: #888;
+    padding: 12px 24px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: 0.3s;
 }
+.cat-btn.active { background: var(--red); color: white; border-color: var(--red); box-shadow: 0 0 20px rgba(255, 60, 60, 0.3); }
 
-input:focus { border-color: #ff0000; box-shadow: 0 0 15px rgba(255,0,0,0.2); }
+/* Grid Logic */
+.container { max-width: 1400px; margin: 0 auto; padding: 0 20px 40px; }
 
-button {
-    padding: 0 35px; background: #ff0000; color: #fff;
-    border: none; border-radius: 8px; font-weight: 900;
-    cursor: pointer; transition: 0.3s ease;
-}
-
-button:hover { background: #cc0000; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,0,0,0.3); }
-
-/* Responsive Grid Logic */
-.wrapper { max-width: 1400px; margin: 0 auto; padding: 20px; }
-
-.auto-grid {
+.library-grid, .sticker-grid {
     display: grid;
-    /* Auto rows: 2 per row on mobile, up to 7 on wide desktop */
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
 }
 
+/* UIverse Card Design */
 .card {
-    background: #080808; border: 1px solid #111;
-    border-radius: 12px; padding: 15px; text-align: center;
-    transition: 0.3s;
+    background: linear-gradient(145deg, #0d0d0d, #050505);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 20px;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative; overflow: hidden;
 }
 
-.card:hover { border-color: #ff0000; transform: scale(1.02); }
+.card:hover { transform: translateY(-10px); border-color: var(--red); }
 
-.card img { width: 100%; aspect-ratio: 1/1; border-radius: 8px; margin-bottom: 12px; object-fit: cover; }
+.card-img-wrap { width: 100%; aspect-ratio: 1/1; border-radius: 15px; overflow: hidden; margin-bottom: 15px; background: #000; }
+.card-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
 
-.player-info { display: flex; flex-direction: column; align-items: center; padding: 60px 20px; }
+.card-info { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
 
-#p-avatar {
-    width: 110px; height: 110px; border-radius: 50%;
-    border: 3px solid #ff0000; box-shadow: 0 0 30px rgba(255,0,0,0.3);
-    margin-bottom: 15px;
+/* UIverse Like Button */
+.like-btn {
+    background: rgba(255,255,255,0.05); border: none; color: #fff;
+    padding: 8px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s;
+}
+.like-btn:hover { background: rgba(255, 60, 60, 0.2); color: var(--red); }
+
+/* UIverse Action Button */
+.action-btn {
+    width: 100%; margin-top: 15px; padding: 12px; border-radius: 12px;
+    background: var(--red); color: white; border: none; font-weight: 700; cursor: pointer; transition: 0.3s;
 }
 
-.btn-back { position: absolute; top: 25px; left: 25px; height: 45px; background: #111; border: 1px solid #222; }
+.action-btn:hover { box-shadow: 0 0 25px var(--red); }
 
-/* Mobile View Scaling */
-@media (max-width: 600px) {
-    .search-box { flex-direction: column; padding: 0 20px; }
-    input { max-width: 100%; }
-    button { height: 55px; }
-    .auto-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .logo { font-size: 2.5rem; }
-              }
+/* Player Gallery Header */
+.player-hero { padding: 80px 20px; background: radial-gradient(circle at top, rgba(255,60,60,0.1), transparent); }
+.target-card { display: flex; align-items: center; gap: 20px; }
+#p-avatar { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--red); }
+.badge { background: var(--red); padding: 4px 12px; border-radius: 4px; font-size: 10px; font-weight: 800; }
+
+/* Mobile Scaling */
+@media (max-width: 768px) {
+    .search-wrapper { width: 100%; }
+    .nav-content { flex-direction: column; }
+    .library-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}
