@@ -3,28 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sticker Set | CSoul</title>
+    <title>Player Gallery</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-obsidian">
-    <header class="player-hero">
-        <div class="glass-header">
-            <button class="uiverse-back" onclick="location.href='index.html'">
-                <i data-lucide="arrow-left"></i> BACK
-            </button>
-            <div class="target-card">
-                <img id="p-avatar" src="" alt="">
-                <div class="target-meta">
-                    <h1 id="p-name">TARGET</h1>
-                    <span class="badge">VERIFIED STEAL</span>
-                </div>
-            </div>
-        </div>
+<body class="obsidian-bg">
+    <header class="showcase-header">
+        <button class="back-link" onclick="location.href='index.html'"><i data-lucide="arrow-left"></i></button>
+        <h1 id="p-name">PLAYER NAME</h1>
     </header>
 
     <main class="container">
-        <div class="sticker-grid" id="decal-grid"></div>
+        <div class="grid" id="decal-grid"></div>
     </main>
 
     <script src="script.js"></script>
